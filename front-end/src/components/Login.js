@@ -32,8 +32,8 @@ class Login extends Component {
             }
             else {
              this.props.signin(this.state.user.username)
-             this.props.history.push('/categories')
              localStorage.setItem('token', data.token)
+             this.props.history.push('/categories')
             }
         })
     }

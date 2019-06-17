@@ -55,18 +55,6 @@ class EventsContainer extends Component {
         // .then(btn.setAttribute("disabled", "disabled")) DISABLE BUTTON
       }
   
-      removeEventFromServer = (id) => {
-        const user_id = localStorage.getItem('token')
-        return  fetch('http://localhost:3000/bookings', {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: user_id
-          },
-          body: JSON.stringify({event_id: id})
-        }).then(resp => resp.json())
-      }
-
    
 
     //initial rendering
@@ -76,7 +64,7 @@ class EventsContainer extends Component {
          
     }
 
-//event CRUD 
+//event save 
 
  saveEvent = (e, id) => {
  const selectedEvent = this.state.events.find(e => e.id === id)
@@ -87,13 +75,6 @@ class EventsContainer extends Component {
  this.saveEventToServer(id)
 }
   
- removeEvent = (id) => {
-   const {myEvents} = this.state
-   const remainingEvents = myEvents.filter(e => e.id !== id)
-   this.setState({myEvents: remainingEvents})
-  
-   this.removeEventFromServer(id)
- }
 
 
     

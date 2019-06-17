@@ -79,9 +79,20 @@ class App extends Component {
         }
       })
       .then(resp => resp.json())
-      .then( d => console.log(d))
-      .then(myEvents => this.setState({myEvents}))
+     
     }
+
+    removeEventFromServer = (id) => {
+      const user_id = localStorage.getItem('token')
+      return  fetch('http://localhost:3000/bookings', {
+        method: 'DELETE',
+        headers: {
+          Authorization: user_id
+        },
+        body: JSON.stringify({event_id: id})
+      }).then(resp => resp.json())
+    }
+
   
 
     //initial rendering
@@ -94,7 +105,7 @@ class App extends Component {
           this.signin(data.username)
           this.getUserCats()
           this.getCats()
-          this.fetchMyEventsFromServer()
+          this.getMyEvents()
             // .then(this.props.history.push('/categories'))
             //check how to do a turnary to see if it's on the log in page
         }
@@ -140,7 +151,19 @@ class App extends Component {
     this.deleteCatFromServer(id)
   }
   
+ //events
+
+ getMyEvents = () =>  this.fetchMyEventsFromServer().then(myEvents => this.setState({myEvents}))
  
+ removeEvent = (e, id) => {
+  const {myEvents} = this.state
+  const remainingEvents = myEvents.filter(e => e.id !== id)
+  this.setState({myEvents: remainingEvents})
+  e.stopPropagation()
+  e.currentTarget.disabled = true
+  this.removeEventFromServer(id)
+}
+
   
   //render
   render() {
@@ -161,14 +184,15 @@ class App extends Component {
       <Route exact path = '/events' render = {props => 
           <EventsContainer { ...props }  allCats={allCats} 
               userCats = { myCats}  saveEvent={this.saveEvent} />} />
-
+      <MDBRow>
       <Route exact path='/myevents' render = { props =>
         myEvents.map(event => 
           <MDBCol style={{margin:"3rem"}}>
-            <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.saveEvent}/>
+            <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.removeEvent}/>
           </MDBCol>
         )
       } />
+      </MDBRow>
     </Switch>  
  </div>
 }
