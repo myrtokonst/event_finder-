@@ -17,7 +17,8 @@ class EventsContainer extends Component {
         filteredEvents: null,
         searchEvents: null,
         events: [],
-        myEvents: []
+        myEvents: [],
+        dateToggle: false
     }
     
     //fetching
@@ -42,18 +43,7 @@ class EventsContainer extends Component {
         }
 
          
-    saveEventToServer = (id) => {
-        const user_id = localStorage.getItem('token')
-        return  fetch('http://localhost:3000/bookings', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: user_id
-          },
-          body: JSON.stringify({event_id: id})
-        }).then(resp => resp.json())
-        // .then(btn.setAttribute("disabled", "disabled")) DISABLE BUTTON
-      }
+   
   
    
 
@@ -65,19 +55,12 @@ class EventsContainer extends Component {
     }
 
 //event save 
-
- saveEvent = (e, id) => {
- const selectedEvent = this.state.events.find(e => e.id === id)
-
- e.stopPropagation()
- e.currentTarget.disabled = true
- this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
- this.saveEventToServer(id)
-}
-  
-
-
-    
+ findEvent = (e, id) => {
+    const selectedEvent = this.state.events.find(e => e.id === id)
+    e.stopPropagation()
+    e.currentTarget.disabled = true
+    this.props.saveEvent(selectedEvent)
+ }
   
     //handling buttons and filters
     handleFilter  = (event) =>  {
@@ -86,15 +69,38 @@ class EventsContainer extends Component {
         filteredEvents.length === events.length ? this.setState({filteredEvents: null}) : this.setState({ filteredEvents: filteredEvents})
     }
     //search
-    handleSearch = (cat, day) => this.postSearchResultsToServer(cat, day)
+    handleSearch = ( cat, day) => {
+    this.postSearchResultsToServer(cat, day)
         .then(searchEvents => this.setState({searchEvents}))
         .then(this.setState({filteredEvents: null}))
+    }
 
     handleBack = () => this.setState({searchEvents: null })
     
+    //sorting
+    sorting = event => {
+       const  { events } = this.state
+       if (event.target.value === "Time") {
+        let chronEvents = events.sort((a,b) => 
+            new Date(a.start.local).getTime() - new Date(b.start.local).getTime())
+            this.setState({events: chronEvents})
+       } else if (event.target.value === "Name") {
+           let alphEvents = events.sort((a,b) => {if(a.name.text < b.name.text) { return -1; }
+           if(a.name.text > b.name.text) { return 1; }
+           return 0})
+           this.setState({events: alphEvents})}
+       }
+     
+     
+            
+          
+       
+    
+
+
     //render
     render () {
-        const { filteredEvents, searchEvents, events, myEvents } = this.state
+        const { filteredEvents, searchEvents, events } = this.state
         return (
             <div>
                 <MDBNavbar color="mdb-color lighten-2" dark className="white-text" expand="md" style={{height:"5rem"}}>
@@ -107,11 +113,15 @@ class EventsContainer extends Component {
                                 {this.state.cats.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
                             </select>
                         </MDBNavItem>
-                        Sort by Date? <MDBInput type="checkbox" id="checkbox"  />
+                        Sort: <select className="browser-default custom-select" style={{ width: "15rem", margin:"2rem"}} onChange={event => this.sorting(event)}>
+                                <option value="None" selected disabled>No Sorting</option>
+                                <option value="Time">Chronologically</option>
+                                <option value="Name">Alphabetically</option>
+                            </select>
                         </MDBFormInline>
                         </MDBNavbarNav>
                 </MDBNavbar> 
-                <Search allCats={this.props.allCats} handleBack={this.handleBack} handleMadness={this.handleSearch} />
+                <Search allCats={this.props.allCats} handleBack={this.handleBack} handleSearch={this.handleSearch} />
                 <MDBContainer>
                 <MDBRow>
                     <Route exact path='/events' render={props => {
@@ -125,7 +135,7 @@ class EventsContainer extends Component {
                         }
                         return  collection.map( event =>  
                             <MDBCol style={{margin:"3rem"}}>
-                                <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.saveEvent}/>
+                                <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.findEvent}/>
                             </MDBCol>)
                         }}/>
                  </MDBRow>

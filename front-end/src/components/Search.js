@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import {  MDBBtn, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu  } from "mdbreact" 
+import {  MDBBtn, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownItem  } from "mdbreact" 
 
 class Search extends Component {
     state = {
@@ -13,7 +13,7 @@ class Search extends Component {
 
     render (){
         const { cat, day } = this.state
-    return ( <MDBDropdown>
+        return ( <MDBDropdown>
       <MDBDropdownToggle caret color="dark" text="white" style={{ width: "65rem", marginTop: "1rem" }}>
         Advanced Search:
       </MDBDropdownToggle>
@@ -45,10 +45,10 @@ class Search extends Component {
              <option value="N">North London</option>
          </select>
          <br />
-       
-        <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleMadness(cat, day)}>Search!</MDBBtn>
+       <MDBDropdownItem>
+        <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleSearch(cat, day)}>Search!</MDBBtn>
         <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleBack()}>Back to Recommended </MDBBtn>
-       
+       </MDBDropdownItem>
      </MDBDropdownMenu>
     </MDBDropdown>
     )}

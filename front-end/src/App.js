@@ -93,7 +93,17 @@ class App extends Component {
       }).then(resp => resp.json())
     }
 
-  
+    saveEventToServer = (id) => {
+      const user_id = localStorage.getItem('token')
+      return  fetch('http://localhost:3000/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: user_id
+        },
+        body: JSON.stringify({event_id: id})
+      }).then(resp => resp.json())
+    }
 
     //initial rendering
   componentDidMount() {
@@ -117,6 +127,10 @@ class App extends Component {
     this.setState({
       username
     })
+    this.props.history.push('/categories')
+    // this.getUserCats()
+    // this.getCats()
+    // this.getMyEvents()
   }
 
   signout = () => {
@@ -164,7 +178,13 @@ class App extends Component {
   this.removeEventFromServer(id)
 }
 
+
+saveEvent = (selectedEvent) => {
+  this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
+  this.saveEventToServer(selectedEvent.id)
+ }
   
+
   //render
   render() {
   const { username, myCats, allCats, myEvents } = this.state

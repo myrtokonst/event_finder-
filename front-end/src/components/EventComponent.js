@@ -34,8 +34,8 @@ class EventComponent extends Component {
               
     <BackSide>
            <h3>{event.venue.name}</h3>
-            <p>{event.category_id}</p>
-            <p>{event.description.text.slice(0,300)}</p>
+            <p>{event.venue.address.localized_address_display}</p>
+            <p>{event.description ? event.description.text.slice(0,300) : "No description given"}</p>
             <MDBBtn href={event.url}>Book Me!</MDBBtn>
     </BackSide>
   </Flippy>

@@ -8,8 +8,8 @@ const {  unpickedCats} = props
 return <div>
 <MDBContainer style={{margin: '5px'}}>
 <h4>Other Categories</h4>
-{unpickedCats.map(cat => <MDBBadge pill color="primary" key={cat.id} style={{margin:'5px'}}>
-  <MDBIcon icon="plus"  onClick={() => props.selectCat(cat.id)} style={{position: "relative", left:"1.6rem", top:"1.5rem"}} /> 
+{unpickedCats.map(cat => <MDBBadge pill color="primary" key={cat.id} style={{margin:'3px', padding:'1rem'}}>
+  <MDBIcon icon="plus" size="sm"  onClick={() => props.selectCat(cat.id)} style={{position: "relative", right:"0rem", top:"2rem"}} /> 
    <CategoryComponent key ={cat.id} category={cat} /></MDBBadge>)}
 </MDBContainer>
 </div>
