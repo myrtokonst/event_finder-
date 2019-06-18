@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {  Route, Switch,  withRouter} from 'react-router-dom'
 
-import {MDBContainer, MDBRow, MDBCol } from 'mdbreact'
+import { MDBRow, MDBCol } from 'mdbreact'
 
 //styling
 import './App.css'
@@ -12,6 +12,7 @@ import NavBar from './components/NavBar'
 import Login from './components/Login'
 import AllCategoriesContainer from './containers/AllCategoriesContainer'
 import EventsContainer from './containers/EventsContainer'
+import Landing from './containers/Landing'
 
 import API from './API'
 import EventComponent from './components/EventComponent';
@@ -127,16 +128,21 @@ class App extends Component {
     this.setState({
       username
     })
-    this.props.history.push('/categories')
-    // this.getUserCats()
-    // this.getCats()
-    // this.getMyEvents()
+    API.signin().then(this.getAllInfo())
+  }
+
+  getAllInfo () {
+      this.getUserCats()
+    this.getCats()
+    this.getMyEvents()
+    // debugger
   }
 
   signout = () => {
     this.setState({
       username: '',
-      myCats: []
+      myCats: [],
+      myEvents: []
     })
     localStorage.removeItem('token')
   }
@@ -144,7 +150,7 @@ class App extends Component {
   //Category CRUD
   saveCats = (e, cats) => this.saveCatsOnServer(cats)
     .then(() => this.setState({ myCats: cats }))
-    // .then(e.currentTarget.disabled = true)
+   
   
 
   selectCat = id => {
@@ -189,11 +195,16 @@ saveEvent = (selectedEvent) => {
   render() {
   const { username, myCats, allCats, myEvents } = this.state
       
-  return <div className = "App" >
+  return <div className = "App"  >
+  
    <NavBar username = {username} signout = {this.signout}/> 
       
    <Switch >
-      <Route exact path = '/' render = { props => 
+      <Route exact path = '/' render = { props =>
+          <Landing { ...props} />
+      }/>
+
+      <Route exact path = '/signin' render = { props => 
           <Login {...props } signin = {this.signin}/>} />
 
       <Route exact path = '/categories' render = {props => 
@@ -208,7 +219,7 @@ saveEvent = (selectedEvent) => {
       <Route exact path='/myevents' render = { props =>
         myEvents.map(event => 
           <MDBCol style={{margin:"3rem"}}>
-            <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.removeEvent}/>
+            <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>
           </MDBCol>
         )
       } />

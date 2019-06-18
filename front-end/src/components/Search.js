@@ -37,13 +37,6 @@ class Search extends Component {
              <option value="today">Today</option>
          </select>
          
-         <h5 style={{position: "relative", left:"2rem"}}>Location:</h5>
-        <select className="browser-default custom-select" name="location" onChange={this.handleEvent}  style={{ width: "60rem", position: "relative", left:"2rem"}}>
-            <option value="W">West London</option>
-            <option value="E">East London</option>
-             <option value="S">South London</option>
-             <option value="N">North London</option>
-         </select>
          <br />
        <MDBDropdownItem>
         <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleSearch(cat, day)}>Search!</MDBBtn>

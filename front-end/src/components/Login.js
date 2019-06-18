@@ -31,9 +31,9 @@ class Login extends Component {
                 alert(`didn't work ${data.error}`)
             }
             else {
-             this.props.signin(this.state.user.username)
              localStorage.setItem('token', data.token)
-             this.props.history.push('/categories')
+             this.props.signin(this.state.user.username)
+             this.props.history.push('/')
             }
         })
     }
@@ -54,13 +54,13 @@ class Login extends Component {
     }
 
     render () {
-        return <div>
-        <h1 style={{marginTop:"2rem"}}>Welcome to Event Finder!</h1>
+        return <div style={{backgroundColor:"white"}}>
+        <h1 className="elegantshadow" style={{marginTop:"0rem"}}>Welcome to Event Finder!</h1>
         <MDBRow style={{position:"absolute", left:"10rem", top:"10rem"}}>
         <MDBCol>
         <MDBContainer>
-            <MDBCard border="dark" className="m-3" style={{width:"30rem", marginTop:"1rem"}}>
-                <MDBCardHeader color="mdb-color lighten-2">Log In</MDBCardHeader>
+            <MDBCard border="dark" style={{width:"30rem", marginTop:"1rem"}} className="Card">
+                <MDBCardHeader  color="mdb-color lighten-2" className="Header"><h4>Log In</h4></MDBCardHeader>
                 <form> 
                     <MDBInput type='text' label='username' name='username' value={this.state.username} onChange={this.handleChange}/>
                     <MDBInput type='password' label='password' name='password' value={this.state.password} onChange={this.handleChange}/>
@@ -72,8 +72,8 @@ class Login extends Component {
 
         <MDBCol>
         <MDBContainer>
-            <MDBCard border="dark" className="m-3" style={{width:"30rem", marginTop:"1rem"}}>
-                <MDBCardHeader color="mdb-color lighten-2">Sign Up</MDBCardHeader>
+            <MDBCard border="dark" style={{width:"30rem", marginTop:"1rem"}} className="Card">
+                <MDBCardHeader   color="mdb-color lighten-2" className="Header"><h4>Sign Up</h4></MDBCardHeader>
                 <form> 
                     <MDBInput type='text' label='username' name='username' value={this.state.username} onChange={this.handleChange}/>
                     <MDBInput type='password' label='password' name='password' value={this.state.password} onChange={this.handleChange}/>

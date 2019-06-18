@@ -7,7 +7,7 @@ import Search from '../components/Search'
 import EventComponent from '../components/EventComponent'
 
 //styling
-import { MDBContainer, MDBRow, MDBCol, MDBNavbar, MDBNavbarNav, MDBNavItem, MDBInput, MDBFormInline } from "mdbreact";
+import { MDBContainer, MDBRow, MDBCol, MDBNavbar, MDBNavbarNav, MDBNavItem,  MDBFormInline } from "mdbreact";
 
 
 class EventsContainer extends Component {
@@ -56,7 +56,8 @@ class EventsContainer extends Component {
 
 //event save 
  findEvent = (e, id) => {
-    const selectedEvent = this.state.events.find(e => e.id === id)
+    const { searchEvents, events } = this.state
+    const selectedEvent = (!searchEvents ? events : searchEvents).find(e => e.id === id)
     e.stopPropagation()
     e.currentTarget.disabled = true
     this.props.saveEvent(selectedEvent)
@@ -90,14 +91,7 @@ class EventsContainer extends Component {
            return 0})
            this.setState({events: alphEvents})}
        }
-     
-     
-            
-          
-       
-    
-
-
+  
     //render
     render () {
         const { filteredEvents, searchEvents, events } = this.state
@@ -125,6 +119,7 @@ class EventsContainer extends Component {
                 <MDBContainer>
                 <MDBRow>
                     <Route exact path='/events' render={props => {
+                        // debugger
                         let collection = events
                         if ((filteredEvents && filteredEvents.length< 1) || (searchEvents && searchEvents.length<1)) {  
                             return <h1 style={{marginLeft: "10rem"}}>No events found</h1> 
@@ -134,8 +129,8 @@ class EventsContainer extends Component {
                             collection = searchEvents
                         }
                         return  collection.map( event =>  
-                            <MDBCol style={{margin:"3rem"}}>
-                                <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.findEvent}/>
+                            <MDBCol  key={1} style={{margin:"3rem"}}>
+                                <EventComponent {...props} event = {event} key = {event.id} icon="star" saveEvent={this.findEvent}/>
                             </MDBCol>)
                         }}/>
                  </MDBRow>

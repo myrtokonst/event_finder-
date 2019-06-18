@@ -10,18 +10,18 @@ class EventsController < ApplicationController
     end 
 
     def specific_events
-        token = ENV['EVENT_BRITE_TOKEN']
+        api_token = ENV['EVENT_BRITE_TOKEN']
         user = get_current_user
         category_ids = user.categories.map(&:id)
-
-        response = RestClient.get 'https://www.eventbriteapi.com/v3/events/search?location.address=london&location.within=10km&expand=venue', {:Authorization =>  "Bearer #{token}"}
+        response = RestClient.get 'https://www.eventbriteapi.com/v3/events/search?location.address=london&location.within=10km&expand=venue', {:Authorization =>  "Bearer #{api_token}"}
         json_response = JSON.parse(response)["events"].select{|event| category_ids.each{|c| c = event["category_id"].to_i}}
-    
+        
         render json: json_response
-     
-        json_response.each do |event| 
-            Event.find_or_create_by(id: event["id"], category_id: event["category_id"])
-        end 
+        
+      
+        # json_response.each do |event| 
+        #     Event.find_or_create_by(id: event["id"], category_id: event["category_id"])
+        # end 
     end 
 
     def search

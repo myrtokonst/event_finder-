@@ -17,12 +17,12 @@ class EventComponent extends Component {
     flipOnClick={true} 
     flipDirection="horizontal" 
     ref={(r) => this.flippy = r} 
-    style={{ width: '400px', height: '350px' }} 
+    style={{ width: '400px', height: '350px', backgroundColor: "white" }} 
   >
     <FrontSide>
           <div className="polaroid">
           <MDBBtn  size="sm" outline color="yellow" onClick={e => this.props.saveEvent(e,event.id)} style={{position:"absolute", right:"0rem", bottom:"0rem"}}>
-              <MDBIcon icon="star" size="sm" />
+              <MDBIcon icon={this.props.icon} size="lg"/>
             </MDBBtn>
               <img src={event.logo ? event.logo.original.url : image} style={{width: '100%', height: '200px'}} />
               <div className="container">
