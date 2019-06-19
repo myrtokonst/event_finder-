@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {  Route, Switch,  withRouter} from 'react-router-dom'
 
-import {MDBContainer, MDBRow, MDBCol } from 'mdbreact'
+import { MDBRow, MDBCol } from 'mdbreact'
 
 //styling
 import './App.css'
@@ -12,6 +12,7 @@ import NavBar from './components/NavBar'
 import Login from './components/Login'
 import AllCategoriesContainer from './containers/AllCategoriesContainer'
 import EventsContainer from './containers/EventsContainer'
+import Landing from './containers/Landing'
 
 import API from './API'
 import EventComponent from './components/EventComponent';
@@ -79,10 +80,31 @@ class App extends Component {
         }
       })
       .then(resp => resp.json())
-      .then( d => console.log(d))
-      .then(myEvents => this.setState({myEvents}))
+     
     }
-  
+
+    removeEventFromServer = (id) => {
+      const user_id = localStorage.getItem('token')
+      return  fetch('http://localhost:3000/bookings', {
+        method: 'DELETE',
+        headers: {
+          Authorization: user_id
+        },
+        body: JSON.stringify({event_id: id})
+      }).then(resp => resp.json())
+    }
+
+    saveEventToServer = (id) => {
+      const user_id = localStorage.getItem('token')
+      return  fetch('http://localhost:3000/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: user_id
+        },
+        body: JSON.stringify({event_id: id})
+      }).then(resp => resp.json())
+    }
 
     //initial rendering
   componentDidMount() {
@@ -94,7 +116,7 @@ class App extends Component {
           this.signin(data.username)
           this.getUserCats()
           this.getCats()
-          this.fetchMyEventsFromServer()
+          this.getMyEvents()
             // .then(this.props.history.push('/categories'))
             //check how to do a turnary to see if it's on the log in page
         }
@@ -106,12 +128,21 @@ class App extends Component {
     this.setState({
       username
     })
+    API.signin().then(this.getAllInfo())
+  }
+
+  getAllInfo () {
+      this.getUserCats()
+    this.getCats()
+    this.getMyEvents()
+    // debugger
   }
 
   signout = () => {
     this.setState({
       username: '',
-      myCats: []
+      myCats: [],
+      myEvents: []
     })
     localStorage.removeItem('token')
   }
@@ -119,7 +150,7 @@ class App extends Component {
   //Category CRUD
   saveCats = (e, cats) => this.saveCatsOnServer(cats)
     .then(() => this.setState({ myCats: cats }))
-    // .then(e.currentTarget.disabled = true)
+   
   
 
   selectCat = id => {
@@ -140,17 +171,40 @@ class App extends Component {
     this.deleteCatFromServer(id)
   }
   
+ //events
+
+ getMyEvents = () =>  this.fetchMyEventsFromServer().then(myEvents => this.setState({myEvents}))
  
+ removeEvent = (e, id) => {
+  const {myEvents} = this.state
+  const remainingEvents = myEvents.filter(e => e.id !== id)
+  this.setState({myEvents: remainingEvents})
+  e.stopPropagation()
+  e.currentTarget.disabled = true
+  this.removeEventFromServer(id)
+}
+
+
+saveEvent = (selectedEvent) => {
+  this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
+  this.saveEventToServer(selectedEvent.id)
+ }
   
+
   //render
   render() {
   const { username, myCats, allCats, myEvents } = this.state
       
-  return <div className = "App" >
+  return <div className = "App"  >
+  
    <NavBar username = {username} signout = {this.signout}/> 
       
    <Switch >
-      <Route exact path = '/' render = { props => 
+      <Route exact path = '/' render = { props =>
+          <Landing { ...props} />
+      }/>
+
+      <Route exact path = '/signin' render = { props => 
           <Login {...props } signin = {this.signin}/>} />
 
       <Route exact path = '/categories' render = {props => 
@@ -161,14 +215,15 @@ class App extends Component {
       <Route exact path = '/events' render = {props => 
           <EventsContainer { ...props }  allCats={allCats} 
               userCats = { myCats}  saveEvent={this.saveEvent} />} />
-
-      <Route exact path='/myevents' render = { props =>
+      <MDBRow>
+      <Route exact path='/myevents' render = { props => 
         myEvents.map(event => 
           <MDBCol style={{margin:"3rem"}}>
-            <EventComponent {...props} event = {event} key = {event.id} saveEvent={this.saveEvent}/>
+            <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>
           </MDBCol>
         )
       } />
+      </MDBRow>
     </Switch>  
  </div>
 }

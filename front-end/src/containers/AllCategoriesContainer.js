@@ -19,16 +19,15 @@ class AllCategoriesContainer extends Component {
   };
 
   unpickedCats() {
-    const { myCats } = this.props;
-    // debugger
-    return this.props.allCats.filter(cat => !myCats.includes(cat));
+    const { myCats, allCats } = this.props
+    return myCats.length>1 ? allCats.filter(cat => !myCats.some(ct => ct.id === cat.id)) : allCats
   }
 
   render() {
     const { myCats, allCats } = this.props;
     return (
-      <div>
-      <h1>Edit your Categories!</h1>
+      <div className="Cats">
+      <h1 className="elegantshadow" style={{padding:'1rem'}}>Click on the categories to edit them:</h1>
       <MDBContainer>
         <MyCategoriesContainer
           cats={myCats}

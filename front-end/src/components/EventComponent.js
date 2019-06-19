@@ -17,12 +17,12 @@ class EventComponent extends Component {
     flipOnClick={true} 
     flipDirection="horizontal" 
     ref={(r) => this.flippy = r} 
-    style={{ width: '400px', height: '350px' }} 
+    style={{ width: '400px', height: '350px', backgroundColor: "white" }} 
   >
     <FrontSide>
           <div className="polaroid">
           <MDBBtn  size="sm" outline color="yellow" onClick={e => this.props.saveEvent(e,event.id)} style={{position:"absolute", right:"0rem", bottom:"0rem"}}>
-              <MDBIcon icon="star" size="sm" />
+              <MDBIcon icon={this.props.icon} size="lg"/>
             </MDBBtn>
               <img src={event.logo ? event.logo.original.url : image} style={{width: '100%', height: '200px'}} />
               <div className="container">
@@ -34,8 +34,8 @@ class EventComponent extends Component {
               
     <BackSide>
            <h3>{event.venue.name}</h3>
-            <p>{event.category_id}</p>
-            <p>{event.description.text.slice(0,300)}</p>
+            <p>{event.venue.address.localized_address_display}</p>
+            <p>{event.description ? event.description.text.slice(0,300) : "No description given"}</p>
             <MDBBtn href={event.url}>Book Me!</MDBBtn>
     </BackSide>
   </Flippy>

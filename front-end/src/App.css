@@ -31,3 +31,26 @@
     transform: rotate(360deg);
   }
 }
+
+.App {
+  background-image: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url("https://blacktuskdevelopment.ca/wp-content/uploads/2015/06/marble-background.jpg");
+  /* height: 160vh  */
+   animation: slideshow 10s linear infinite;
+}
+
+@keyframes slideshow
+{
+  0% {top:0;}
+  100% {top:-200%;}
+  
+}
+
+
+.Pill :hover{
+  transform: scale(0.9, 0.9);
+}
+
+.Pill {
+  border-radius: 40px;
+    box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.22);
+}

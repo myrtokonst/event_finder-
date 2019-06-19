@@ -31,13 +31,7 @@ ActiveRecord::Schema.define(version: 2019_06_13_143849) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.string "url"
-    t.string "venue_name"
-    t.string "venue_address"
     t.bigint "category_id"
-    t.datetime "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_events_on_category_id"
