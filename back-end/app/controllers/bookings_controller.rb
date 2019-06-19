@@ -17,7 +17,6 @@ class BookingsController < ApplicationController
         api_token = ENV['EVENT_BRITE_TOKEN']
         user = get_current_user
         event_ids = user.bookings.map(&:event_id)
-        # byebug
         events = []
         event_ids.each do |id| 
          response = RestClient.get "https://private-anon-b2c5536763-eventbriteapiv3public.apiary-proxy.com/v3/events/#{id}/?expand=venue&logo", {:Authorization =>  "Bearer #{api_token}"} 

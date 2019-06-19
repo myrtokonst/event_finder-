@@ -10,6 +10,7 @@ import EventComponent from '../components/EventComponent'
 import { MDBContainer, MDBRow, MDBCol, MDBNavbar, MDBNavbarNav, MDBNavItem,  MDBFormInline } from "mdbreact";
 
 
+
 class EventsContainer extends Component {
     
     state = {
@@ -130,7 +131,7 @@ class EventsContainer extends Component {
                             collection = searchEvents
                         }
                         return  collection.map( event =>  
-                            <MDBCol  key={1} style={{margin:"3rem"}}>
+                            <MDBCol style={{margin:"3rem"}}>
                                 <EventComponent {...props} event = {event} key = {event.id} icon="star" saveEvent={this.findEvent}/>
                             </MDBCol>)
                         }}/>

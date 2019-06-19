@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {  Route, Switch,  withRouter} from 'react-router-dom'
 
-import { MDBRow, MDBCol } from 'mdbreact'
+import { MDBRow, MDBCol, MDBContainer } from 'mdbreact'
 
 //styling
 import './App.css'
@@ -13,9 +13,10 @@ import Login from './components/Login'
 import AllCategoriesContainer from './containers/AllCategoriesContainer'
 import EventsContainer from './containers/EventsContainer'
 import Landing from './containers/Landing'
+import Calendar from './components/Calendar'
+
 
 import API from './API'
-import EventComponent from './components/EventComponent';
 
 
 class App extends Component {
@@ -158,7 +159,7 @@ class App extends Component {
     const selectedCat = allCats.filter(cat => cat.id === id)[0]
 
     !myCats.map(cat => cat.id).includes(selectedCat.id) 
-    ? this.setState({ myCats: [...myCats, selectedCat]}) 
+    ?this.setState({ myCats: [...myCats, selectedCat]}) 
     : alert("Already Picked, just a buggy bug chilling")
   }
 
@@ -175,12 +176,10 @@ class App extends Component {
 
  getMyEvents = () =>  this.fetchMyEventsFromServer().then(myEvents => this.setState({myEvents}))
  
- removeEvent = (e, id) => {
+ removeEvent = (id) => {
   const {myEvents} = this.state
   const remainingEvents = myEvents.filter(e => e.id !== id)
   this.setState({myEvents: remainingEvents})
-  e.stopPropagation()
-  e.currentTarget.disabled = true
   this.removeEventFromServer(id)
 }
 
@@ -217,11 +216,15 @@ saveEvent = (selectedEvent) => {
               userCats = { myCats}  saveEvent={this.saveEvent} />} />
       <MDBRow>
       <Route exact path='/myevents' render = { props => 
-        myEvents.map(event => 
-          <MDBCol style={{margin:"3rem"}}>
-            <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>
-          </MDBCol>
-        )
+       <MDBContainer>
+         <Calendar {...props} events={myEvents} removeEvent={this.removeEvent} />
+       </MDBContainer>
+       
+        // myEvents.map(event => 
+        //   <MDBCol style={{margin:"3rem"}}>
+        //     <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>
+        //   </MDBCol>
+         // )
       } />
       </MDBRow>
     </Switch>  

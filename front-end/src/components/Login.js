@@ -46,9 +46,9 @@ class Login extends Component {
                 alert(`Sign up didn't work: ${data.error}`)
             }
             else {
+                localStorage.setItem('token', data.token)
              this.props.signin(this.state.user.username)
              this.props.history.push('/categories')
-             localStorage.setItem('token', data.token)
             }
         })
     }
