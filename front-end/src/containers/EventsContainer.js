@@ -30,7 +30,7 @@ class EventsContainer extends Component {
            .then(events => this.setState({events}))
         }
     
-    postSearchResultsToServer (cat, day) {
+    postSearchResultsToServer (cat, day, location) {
         return fetch('http://localhost:3000/search', {
             method: 'POST',
             headers: {
@@ -38,7 +38,8 @@ class EventsContainer extends Component {
             },
             body: JSON.stringify({
                 day: day,
-                cat: cat})
+                cat: cat,
+                location: location==="All" ? [] : location})
             }).then(resp => resp.json())
         }
 
@@ -70,8 +71,8 @@ class EventsContainer extends Component {
         filteredEvents.length === events.length ? this.setState({filteredEvents: null}) : this.setState({ filteredEvents: filteredEvents})
     }
     //search
-    handleSearch = ( cat, day) => {
-    this.postSearchResultsToServer(cat, day)
+    handleSearch = ( cat, day, location) => {
+    this.postSearchResultsToServer(cat, day, location)
         .then(searchEvents => this.setState({searchEvents}))
         .then(this.setState({filteredEvents: null}))
     }

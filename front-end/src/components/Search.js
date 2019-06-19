@@ -5,14 +5,15 @@ import {  MDBBtn, MDBDropdown, MDBDropdownToggle, MDBDropdownMenu, MDBDropdownIt
 class Search extends Component {
     state = {
         cat: '',
-        day: ''
+        day: '',
+        location: ''
     }
     handleEvent = (event) => {
     this.setState({[event.target.name]: event.target.value})
     }
 
     render (){
-        const { cat, day } = this.state
+        const { cat, day, location } = this.state
         return ( <MDBDropdown>
       <MDBDropdownToggle caret color="dark" text="white" style={{ width: "65rem", marginTop: "1rem" }}>
         Advanced Search:
@@ -36,10 +37,20 @@ class Search extends Component {
              <option value="tomorrow">Tomorrow</option>
              <option value="today">Today</option>
          </select>
+
+         <h5 style={{position: "relative", left:"2rem"}}>Location:</h5>
+        <select className="browser-default custom-select" name="location" onChange={this.handleEvent}  style={{ width: "60rem", position: "relative", left:"2rem"}}>
+             <option value="All">Anywhere</option>
+            <option value="W">West London</option>
+            <option value="E">East London</option>
+             <option value="S">South London</option>
+             <option value="N">North London</option>
+  
+         </select>
          
          <br />
        <MDBDropdownItem>
-        <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleSearch(cat, day)}>Search!</MDBBtn>
+        <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleSearch(cat, day, location)}>Search!</MDBBtn>
         <MDBBtn flat outline color="mdb-color lighten-2" size="sm" onClick={() => this.props.handleBack()}>Back to Recommended </MDBBtn>
        </MDBDropdownItem>
      </MDBDropdownMenu>

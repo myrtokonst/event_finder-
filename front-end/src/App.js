@@ -216,7 +216,7 @@ saveEvent = (selectedEvent) => {
           <EventsContainer { ...props }  allCats={allCats} 
               userCats = { myCats}  saveEvent={this.saveEvent} />} />
       <MDBRow>
-      <Route exact path='/myevents' render = { props =>
+      <Route exact path='/myevents' render = { props => 
         myEvents.map(event => 
           <MDBCol style={{margin:"3rem"}}>
             <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>

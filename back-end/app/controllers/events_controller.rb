@@ -28,8 +28,13 @@ class EventsController < ApplicationController
         token = ENV['EVENT_BRITE_TOKEN']
         date = params[:day]
         category = params[:cat]
+        location = params[:location]
         response = RestClient.get "https://www.eventbriteapi.com/v3/events/search?location.address=london&location.within=10km&expand=venue&start_date.keyword=#{date}", {:Authorization =>  "Bearer #{token}"}
-        json_response = JSON.parse(response)["events"].select{|event|  event["category_id"] == category}
+        json_response = JSON.parse(response)["events"].select{|event|  event["category_id"] == category && event["venue"]["address"]["postal_code"] != nil}
+        if !location = ""
+            json_response = first_json.select{|event| event["venue"]["address"]["postal_code"][0]==location}
+        end 
+
         render json: json_response
     end 
 

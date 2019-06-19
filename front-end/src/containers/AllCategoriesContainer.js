@@ -20,7 +20,7 @@ class AllCategoriesContainer extends Component {
 
   unpickedCats() {
     const { myCats, allCats } = this.props
-    return allCats.filter(cat => !myCats.some(ct => ct.id === cat.id))
+    return myCats.length>1 ? allCats.filter(cat => !myCats.some(ct => ct.id === cat.id)) : allCats
   }
 
   render() {

@@ -25,7 +25,7 @@ function Landing (props) {
                     </h3>
                     <hr className="hr-light my-4 w-75" />
                     <h4 className="subtext-header mt-2 mb-4">
-                      Click the button below to begin!
+                      Click the button below to find your next adventure!
                     </h4>
                     <MDBBtn outline rounded color="white" onClick={() => handleClick()} >
                        Pick your categories
