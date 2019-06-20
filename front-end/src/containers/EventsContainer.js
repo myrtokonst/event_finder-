@@ -80,8 +80,11 @@ class EventsContainer extends Component {
     sorting = event => {
        const  { events, filteredEvents, searchEvents } = this.state
        let collection = []
-       filteredEvents ? collection = filteredEvents : collection = events
-       searchEvents ? collection = searchEvents : collection = events
+       if (filteredEvents)  {collection = filteredEvents
+        } else if (searchEvents)  {collection = searchEvents
+        } else  {
+            collection = events
+        }
        if (event.target.value === "Time") {
         let chronEvents = collection.sort((a,b) => 
             new Date(a.start.local).getTime() - new Date(b.start.local).getTime())

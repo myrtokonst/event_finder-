@@ -37,7 +37,6 @@ class EventsController < ApplicationController
         if !(category.empty?)
             if !(second_json ==nil) 
             second_json = second_json.select{|event| event["category_id"] == category }
-                byebug
             else 
             second_json = first_json.select{|event| event["category_id"] == category }
             end 
