@@ -13,16 +13,18 @@ class UsecatsController < ApplicationController
  end 
 
  def create_cat 
-    user = get_current_user
-    params[:categories].map{|c| c[:id]}
-        .each do |c| 
-         Usecat.find_or_create_by(user_id: user.id, category_id: c)
-        end 
-     render json: user.categories
+   user = get_current_user
+   params[:categories].map{|c| c[:id]}
+   .each do |c| 
+      Usecat.find_or_create_by(user_id: user.id, category_id: c)
+   end 
+   render json: user.categories
+   
       end 
 
  def delete_cat
    user = get_current_user
+   
    cat_id = params[:cat_id]
    user_cat = Usecat.find_by(user_id: user.id, category_id: cat_id)
    user_cat.destroy

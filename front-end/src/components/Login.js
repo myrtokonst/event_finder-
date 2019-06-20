@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import API from '../API'
 
-import './Login.css'
+import '../style/Login.css'
 import {  MDBBtn, MDBContainer, MDBCard, MDBInput, MDBCardHeader, MDBRow, MDBCol } from "mdbreact";
 
 class Login extends Component {
@@ -46,9 +46,9 @@ class Login extends Component {
                 alert(`Sign up didn't work: ${data.error}`)
             }
             else {
+                localStorage.setItem('token', data.token)
              this.props.signin(this.state.user.username)
              this.props.history.push('/categories')
-             localStorage.setItem('token', data.token)
             }
         })
     }

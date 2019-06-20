@@ -20,6 +20,7 @@ class UsersController < ApplicationController
 
     def signin
         user = User.find_by(username: params[:user][:username])
+        # 
         if user and user.authenticate(params[:user][:password])
             render json: {token: issue_token({id: user.id})}
         else

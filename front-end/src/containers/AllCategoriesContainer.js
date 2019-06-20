@@ -20,7 +20,7 @@ class AllCategoriesContainer extends Component {
 
   unpickedCats() {
     const { myCats, allCats } = this.props
-    return myCats.length>1 ? allCats.filter(cat => !myCats.some(ct => ct.id === cat.id)) : allCats
+    return  allCats.filter(cat => !myCats.some(ct => ct.id === cat.id)) 
   }
 
   render() {
@@ -39,7 +39,7 @@ class AllCategoriesContainer extends Component {
           unpickedCats = {this.unpickedCats()}
         />
         </MDBContainer>
-        <MDBBtn flat outline color="mdb-color lighten-2"  onClick={e => this.props.saveCats(e, myCats)}>Save Changes</MDBBtn>
+        <MDBBtn flat outline color="mdb-color lighten-2"  onClick={e => this.props.saveCats(myCats)}>Save Changes</MDBBtn>
         <MDBBtn flat outline color="mdb-color lighten-2" onClick={this.handleClick}>Show me events</MDBBtn>
       </div>
     );

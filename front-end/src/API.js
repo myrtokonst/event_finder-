@@ -5,6 +5,7 @@ class API {
  static validateUrl = API.baseUrl + '/validate'
 
  static signin(user) {
+  //  debugger
    return  fetch( this.signinUrl, {
         method: 'POST', 
         headers:{'Content-Type': 'application/json'}, 
