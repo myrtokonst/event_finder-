@@ -23,6 +23,7 @@ class UsecatsController < ApplicationController
 
  def delete_cat
    user = get_current_user
+   
    cat_id = params[:cat_id]
    user_cat = Usecat.find_by(user_id: user.id, category_id: cat_id)
    user_cat.destroy

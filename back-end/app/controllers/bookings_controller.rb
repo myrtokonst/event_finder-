@@ -11,6 +11,7 @@ class BookingsController < ApplicationController
         user = get_current_user
         event_id = params[:booking][:event_id].to_i
         Booking.find_by(user_id: user.id, event_id: event_id).destroy
+        # byebug
     end 
 
     def user_index

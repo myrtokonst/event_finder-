@@ -1,7 +1,7 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import bootstrapPlugin from '@fullcalendar/bootstrap'
+
 
 import './main.scss' // webpack must be configured to do this
 import {  MDBContainer } from 'mdbreact'
@@ -40,7 +40,7 @@ export default class Calendar extends React.Component {
             <div className="Calendar">
                 {popover &&  <PopUp event={event} close={this.closePopUp} deleteEvent={removeEvent} />}
                 <MDBContainer style={{height:'85vh'}}>
-                    <h1 className="elegantshadow">Click on an event on your calendar</h1>
+                    <h1 className="elegantshadow">Your Calendar</h1>
                     
                     <FullCalendar defaultView="dayGridMonth" plugins={[ dayGridPlugin]}
                         eventColor='black' eventTextColor='white' displayEventTime={false} 

@@ -24,7 +24,7 @@ class EventComponent extends Component {
           <MDBBtn  size="sm" outline color="yellow" onClick={e => this.props.saveEvent(e,event.id)} style={{position:"absolute", right:"0rem", bottom:"0rem"}}>
               <MDBIcon icon={this.props.icon} size="lg"/>
             </MDBBtn>
-              <img src={event.logo ? event.logo.original.url : image} style={{width: '100%', height: '200px'}} />
+              <img src={event.logo ? event.logo.original.url : image} alt="image" style={{width: '100%', height: '200px'}} />
               <div className="container">
                 <h4>{event.name.text}</h4>
                 <p>{date.toDateString()}</p>

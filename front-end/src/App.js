@@ -18,7 +18,7 @@ import Calendar from './components/Calendar'
 
 import API from './API'
 
-
+console.log(process.env)
 class App extends Component {
   state = {
     username: '',
@@ -89,11 +89,13 @@ class App extends Component {
       return  fetch('http://localhost:3000/bookings', {
         method: 'DELETE',
         headers: {
+          'Content-Type': 'application/json',
           Authorization: user_id
         },
         body: JSON.stringify({event_id: id})
-      }).then(resp => resp.json())
+      })
     }
+    
 
     saveEventToServer = (id) => {
       const user_id = localStorage.getItem('token')
@@ -129,11 +131,13 @@ class App extends Component {
     this.setState({
       username
     })
-    API.signin().then(this.getAllInfo())
+    // API.signin(username).then(
+      this.getAllInfo()
+      // )
   }
 
   getAllInfo () {
-      this.getUserCats()
+    this.getUserCats()
     this.getCats()
     this.getMyEvents()
     // debugger
@@ -158,9 +162,9 @@ class App extends Component {
     const { allCats, myCats } = this.state
     const selectedCat = allCats.filter(cat => cat.id === id)[0]
 
-    !myCats.map(cat => cat.id).includes(selectedCat.id) 
-    ?this.setState({ myCats: [...myCats, selectedCat]}) 
-    : alert("Already Picked, just a buggy bug chilling")
+     !myCats.map(cat => cat.id).includes(selectedCat.id) 
+    // ? alert("Already Picked, just a buggy bug chilling")
+    && this.setState({ myCats: [...myCats, selectedCat]}) 
   }
 
   deleteCat = (id) => {
@@ -185,15 +189,16 @@ class App extends Component {
 
 
 saveEvent = (selectedEvent) => {
-  this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
+  !this.state.myCats.includes(selectedEvent.id)
+  && this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
   this.saveEventToServer(selectedEvent.id)
  }
   
 
   //render
   render() {
+    
   const { username, myCats, allCats, myEvents } = this.state
-      
   return <div className = "App"  >
   
    <NavBar username = {username} signout = {this.signout}/> 
