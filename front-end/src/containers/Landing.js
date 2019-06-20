@@ -2,7 +2,7 @@ import React from 'react'
 
 
 import { MDBMask, MDBRow, MDBCol,  MDBBtn, MDBView, MDBContainer } from "mdbreact";
-    import "./Landing.css";
+    import "../style/Landing.css";
 
 function Landing (props) {
    const  handleClick = () => {

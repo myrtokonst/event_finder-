@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import API from '../API'
 
-import './Login.css'
+import '../style/Login.css'
 import {  MDBBtn, MDBContainer, MDBCard, MDBInput, MDBCardHeader, MDBRow, MDBCol } from "mdbreact";
 
 class Login extends Component {

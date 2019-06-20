@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import Flippy, { FrontSide, BackSide } from 'react-flippy'
 import { MDBBtn, MDBIcon } from 'mdbreact'
 import image from '../avatar.png'
-// import './EventComponent.css'
+// import '../style/EventComponent.css'
 
 class EventComponent extends Component {
    

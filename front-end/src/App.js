@@ -2,10 +2,10 @@
 import React, { Component } from 'react'
 import {  Route, Switch,  withRouter} from 'react-router-dom'
 
-import { MDBRow, MDBCol, MDBContainer } from 'mdbreact'
+import { MDBRow,  MDBContainer } from 'mdbreact'
 
 //styling
-import './App.css'
+import './style/App.css'
 
 //components
 import NavBar from './components/NavBar'
@@ -18,7 +18,7 @@ import Calendar from './components/Calendar'
 
 import API from './API'
 
-console.log(process.env)
+
 class App extends Component {
   state = {
     username: '',
@@ -28,7 +28,7 @@ class App extends Component {
   }
 
   //fetch requests
-  getUserCats() {
+  getUserCats = () => {
     let token = localStorage.getItem('token')
     return fetch('http://localhost:3000/usecats', {
         headers: {
@@ -40,13 +40,13 @@ class App extends Component {
 
   }
 
-  getCats() {
+  getCats = () => {
     return fetch('http://localhost:3000/categories')
       .then(resp => resp.json())
       .then(allCats => this.setState({allCats}))
   }
 
-  saveCatsOnServer (cats) {
+  saveCatsOnServer = cats => {
     let token = localStorage.getItem('token')
     return fetch('http://localhost:3000/usecats', {
         method: 'POST',
@@ -60,7 +60,7 @@ class App extends Component {
       }).then(resp => resp.json())
     }
 
-    deleteCatFromServer = (id) => {
+    deleteCatFromServer = id => {
       const user_id = localStorage.getItem('token')
       return  fetch('http://localhost:3000/usecats', {
         method: 'DELETE',
@@ -120,8 +120,6 @@ class App extends Component {
           this.getUserCats()
           this.getCats()
           this.getMyEvents()
-            // .then(this.props.history.push('/categories'))
-            //check how to do a turnary to see if it's on the log in page
         }
       })
   }
@@ -131,9 +129,7 @@ class App extends Component {
     this.setState({
       username
     })
-    // API.signin(username).then(
-      this.getAllInfo()
-      // )
+    this.getAllInfo()
   }
 
   getAllInfo () {
@@ -153,7 +149,7 @@ class App extends Component {
   }
 
   //Category CRUD
-  saveCats = (e, cats) => this.saveCatsOnServer(cats)
+  saveCats = cats => this.saveCatsOnServer(cats)
     .then(() => this.setState({ myCats: cats }))
    
   
@@ -167,7 +163,7 @@ class App extends Component {
     && this.setState({ myCats: [...myCats, selectedCat]}) 
   }
 
-  deleteCat = (id) => {
+  deleteCat = id => {
     const {myCats } = this.state;
     const stillSelectedCats = myCats.filter(cat => cat.id !== id)
     this.setState({
@@ -180,7 +176,7 @@ class App extends Component {
 
  getMyEvents = () =>  this.fetchMyEventsFromServer().then(myEvents => this.setState({myEvents}))
  
- removeEvent = (id) => {
+ removeEvent = id => {
   const {myEvents} = this.state
   const remainingEvents = myEvents.filter(e => e.id !== id)
   this.setState({myEvents: remainingEvents})
@@ -188,7 +184,7 @@ class App extends Component {
 }
 
 
-saveEvent = (selectedEvent) => {
+saveEvent = selectedEvent => {
   !this.state.myCats.includes(selectedEvent.id)
   && this.setState({myEvents: [...this.state.myEvents, selectedEvent]})
   this.saveEventToServer(selectedEvent.id)
@@ -224,12 +220,6 @@ saveEvent = (selectedEvent) => {
        <MDBContainer>
          <Calendar {...props} events={myEvents} removeEvent={this.removeEvent} />
        </MDBContainer>
-       
-        // myEvents.map(event => 
-        //   <MDBCol style={{margin:"3rem"}}>
-        //     <EventComponent {...props} event = {event} key = {event.id} icon="trash-alt" saveEvent={this.removeEvent}/>
-        //   </MDBCol>
-         // )
       } />
       </MDBRow>
     </Switch>  

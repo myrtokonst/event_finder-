@@ -3,7 +3,7 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
 
-import './main.scss' // webpack must be configured to do this
+import '../style/main.scss'
 import {  MDBContainer } from 'mdbreact'
 
 import PopUp from './PopUp'
@@ -25,8 +25,6 @@ export default class Calendar extends React.Component {
     showPopUp = e => {
         const thisEvent = this.props.events.find(event => event.id === e.event.id)
             this.setState({popover: !this.state.popover, event: thisEvent})
-            
-            // return this.sendEventToPopUp(e.event.id)
         }
 
     closePopUp = () => {

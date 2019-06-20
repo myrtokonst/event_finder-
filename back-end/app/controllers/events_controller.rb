@@ -30,12 +30,23 @@ class EventsController < ApplicationController
         category = params[:cat]
         location = params[:location]
         response = RestClient.get "https://www.eventbriteapi.com/v3/events/search?location.address=london&location.within=10km&expand=venue&start_date.keyword=#{date}", {:Authorization =>  "Bearer #{token}"}
-        json_response = JSON.parse(response)["events"].select{|event|  event["category_id"] == category && event["venue"]["address"]["postal_code"] != nil}
-        if !location = ""
-            json_response = first_json.select{|event| event["venue"]["address"]["postal_code"][0]==location}
+        first_json = JSON.parse(response)["events"].select{|event|  event["venue"]["address"]["postal_code"] != nil}
+        if !(location.empty?) 
+            second_json = first_json.select{|event|  event["venue"]["address"]["postal_code"][0] == location}
         end 
-
-        render json: json_response
+        if !(category.empty?)
+            if !(second_json ==nil) 
+            second_json = second_json.select{|event| event["category_id"] == category }
+                byebug
+            else 
+            second_json = first_json.select{|event| event["category_id"] == category }
+            end 
+        end 
+        if second_json== nil 
+            second_json = first_json
+        end 
+       
+        render json:  second_json
     end 
 
 end

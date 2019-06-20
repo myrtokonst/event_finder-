@@ -39,15 +39,11 @@ class EventsContainer extends Component {
             },
             body: JSON.stringify({
                 day: day,
-                cat: cat,
+                cat: cat==="All" ? [] : cat,
                 location: location==="All" ? [] : location})
             }).then(resp => resp.json())
         }
 
-         
-   
-  
-   
 
     //initial rendering
     componentDidMount() {
@@ -65,7 +61,7 @@ class EventsContainer extends Component {
     this.props.saveEvent(selectedEvent)
  }
   
-    //handling buttons and filters
+ //handling buttons and filters
     handleFilter  = (event) =>  {
         const { events } = this.state
         const filteredEvents = events.filter(e => event.target.value === "All" ? e : e.category_id === event.target.value)
@@ -82,16 +78,19 @@ class EventsContainer extends Component {
     
     //sorting
     sorting = event => {
-       const  { events } = this.state
+       const  { events, filteredEvents, searchEvents } = this.state
+       let collection = []
+       filteredEvents ? collection = filteredEvents : collection = events
+       searchEvents ? collection = searchEvents : collection = events
        if (event.target.value === "Time") {
-        let chronEvents = events.sort((a,b) => 
+        let chronEvents = collection.sort((a,b) => 
             new Date(a.start.local).getTime() - new Date(b.start.local).getTime())
-            this.setState({events: chronEvents})
+            this.setState({collection: chronEvents})
        } else if (event.target.value === "Name") {
-           let alphEvents = events.sort((a,b) => {if(a.name.text < b.name.text) { return -1; }
+           let alphEvents = collection.sort((a,b) => {if(a.name.text < b.name.text) { return -1; }
            if(a.name.text > b.name.text) { return 1; }
            return 0})
-           this.setState({events: alphEvents})}
+           this.setState({collection: alphEvents})}
        }
   
     //render
@@ -103,6 +102,7 @@ class EventsContainer extends Component {
                         <MDBNavbarNav left>
                         <MDBFormInline>
                         <MDBNavItem active>
+                            
                             Filter:
                             <select className="browser-default custom-select" style={{ width: "15rem", margin:"2rem"}} onChange={event => this.handleFilter(event)}>
                                 <option value="All">All</option>
@@ -124,7 +124,7 @@ class EventsContainer extends Component {
                         // debugger
                         let collection = events
                         if ((filteredEvents && filteredEvents.length< 1) || (searchEvents && searchEvents.length<1)) {  
-                            return <h1 style={{marginLeft: "10rem"}}>No events found</h1> 
+                            return <h1 style={{marginLeft: "10rem", height: "160vh" }}>No events found</h1> 
                         } else if (filteredEvents && filteredEvents.length>0){
                             collection = filteredEvents
                         } else if (searchEvents) {

@@ -39,7 +39,7 @@ class AllCategoriesContainer extends Component {
           unpickedCats = {this.unpickedCats()}
         />
         </MDBContainer>
-        <MDBBtn flat outline color="mdb-color lighten-2"  onClick={e => this.props.saveCats(e, myCats)}>Save Changes</MDBBtn>
+        <MDBBtn flat outline color="mdb-color lighten-2"  onClick={e => this.props.saveCats(myCats)}>Save Changes</MDBBtn>
         <MDBBtn flat outline color="mdb-color lighten-2" onClick={this.handleClick}>Show me events</MDBBtn>
       </div>
     );

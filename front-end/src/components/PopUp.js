@@ -1,7 +1,10 @@
 import React from 'react'
-import './PopUp.css'
-import { MDBContainer, MDBCloseIcon, MDBBtn } from 'mdbreact'
+
 import GoogleMap from './GoogleApiWrapper'
+
+import '../style/PopUp.css'
+import { MDBContainer, MDBCloseIcon, MDBBtn } from 'mdbreact'
+
 
 
 class PopUp extends React.Component {  
